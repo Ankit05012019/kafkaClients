@@ -1,0 +1,39 @@
+# Use the official Go image for building
+FROM golang:1.23 AS builder
+
+RUN apt update && apt  install -y \
+    build-essential \
+    gcc \
+    g++ \
+    libc6-dev \
+    librdkafka-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set the working directory
+WORKDIR /app
+
+# Copy go.mod and go.sum files
+COPY . .
+
+# Download dependencies
+RUN go mod download
+
+
+# Build the Go application
+RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o main .
+
+# Use a minimal base image for the final executable
+FROM alpine:latest
+
+# Set the working directory
+WORKDIR /root/
+
+# Copy the built binary from the builder stage
+COPY --from=builder /app/main .
+
+# Expose the application port (update if necessary)
+EXPOSE 8080
+
+# Command to run the application
+CMD ["./main"]
+

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-consumer
+  labels:
+    app: kafka-consumer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-consumer
+  template:
+    metadata:
+      labels:
+        app: kafka-consumer
+    spec:
+      containers:
+      - name: kafka-consumer
+        image: ankittripathi17/kafkaconsumer:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: apiKey
+          value: "N4PTUQ7CJTYU6XCF"
+        - name: apiSecret
+          value: "iSUKZoM2d09JksOtnblWYnpOhSdz9cR5FtSToWCAcC9w2cwemVyA3mYgrSdqTzPd"
+

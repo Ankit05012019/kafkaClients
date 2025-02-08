@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-producer
+  labels:
+    app: kafka-producer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-producer
+  template:
+    metadata:
+      labels:
+        app: kafka-producer
+    spec:
+      containers:
+      - name: kafka-producer
+        image: ankittripathi17/kafkaproducer:v1
+        ports:
+        - containerPort: 8080
+        env:
+        - name: apiKey
+          value: "N4PTUQ7CJTYU6XCF"
+        - name: apiSecret
+          value: "iSUKZoM2d09JksOtnblWYnpOhSdz9cR5FtSToWCAcC9w2cwemVyA3mYgrSdqTzPd"
+
